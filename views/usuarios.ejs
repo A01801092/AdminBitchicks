@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Usuarios - BitChicks Admin</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Itim&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="header">
+    <h1>✨ Usuarios ✨</h1>
+    <nav class="nav">
+      <a href="/">Inicio</a>
+      <a href="/lecciones">Lecciones</a>
+      <a href="/estadisticas">Estadísticas</a>
+      <a href="/usuarios">Usuarios</a>
+      <a href="/creditos">Créditos</a>
+      <a href="/juego">Juego</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="usuarios">
+      <div class="filtros">
+        <label for="ordenar-por">Ordenar por:</label>
+        <select id="ordenar-por">
+          <option value="nombre-asc">Nombre (A-Z)</option>
+          <option value="nombre-desc">Nombre (Z-A)</option>
+          <option value="edad-asc">Edad (Menor a Mayor)</option>
+          <option value="edad-desc">Edad (Mayor a Menor)</option>
+          <option value="genero-asc">Género (F-M-O)</option>
+          <option value="genero-desc">Género (O-M-F)</option>
+          <option value="pais-asc">País (A-Z)</option>
+          <option value="pais-desc">País (Z-A)</option>
+          <option value="tiempo-asc">Tiempo Jugado (Menor a Mayor)</option>
+          <option value="tiempo-desc">Tiempo Jugado (Mayor a Menor)</option>
+          <option value="racha-asc">Racha (Menor a Mayor)</option>
+          <option value="racha-desc">Racha (Mayor a Menor)</option>
+          <option value="fecha-asc">Última Sesión (Antiguas primero)</option>
+          <option value="fecha-desc">Última Sesión (Recientes primero)</option>
+        </select>
+      </div>
+
+      <table class="tabla-usuarios">
+        <thead>
+          <tr>
+            <th class="sortable" data-col="nombre">Nombre</th>
+            <th>Correo</th>
+            <th class="sortable" data-col="edad">Edad</th>
+            <th class="sortable" data-col="genero">Género</th>
+            <th class="sortable" data-col="pais">Pais</th>
+            <th class="sortable" data-col="tiempo">Tiempo Jugado</th>
+            <th class="sortable" data-col="racha">Racha de Días</th>
+            <th class="sortable" data-col="fecha">Última Sesión</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-body">
+          <% usuarios.forEach(usuario => { %>
+            <tr>
+              <td><%= usuario.nombre %> <%= usuario.apellido %></td>
+              <td><%= usuario.correo_jugador %></td>
+              <td><%= usuario.edad %></td>
+              <td><%= usuario.genero %></td>
+              <td><%= usuario.pais %></td>
+              <td><%= usuario.tiempoJugado %></td>
+              <td><%= usuario.rachaDias %></td>
+              <td><%= new Date(usuario.ultimoInicioSesion).toLocaleDateString('es-MX') %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 BitChicks - Todos los derechos reservados para CryptoChicks</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Obtener los datos iniciales de la tabla
+      const tablaBody = document.getElementById('tabla-body');
+      const filas = Array.from(tablaBody.querySelectorAll('tr'));
+
+      // Crear array de usuarios desde las filas de la tabla
+      const usuariosData = filas.map(fila => {
+        const celdas = fila.querySelectorAll('td');
+        return {
+          nombre: celdas[0].textContent.split(' ')[0],
+          apellido: celdas[0].textContent.split(' ')[1],
+          correo_jugador: celdas[1].textContent,
+          edad: parseInt(celdas[2].textContent),
+          genero: celdas[3].textContent,
+          pais: celdas[4].textContent,
+          tiempoJugado: parseFloat(celdas[5].textContent),
+          rachaDias: parseInt(celdas[6].textContent),
+          ultimoInicioSesion: celdas[7].textContent
+        };
+      });
+
+      // Variables para el ordenamiento
+      let ordenActual = '';
+      let direccion = 'asc';
+
+      // Configurar event listeners para los encabezados
+      document.querySelectorAll('.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+          const columna = th.getAttribute('data-col');
+          ordenarPor(columna);
+        });
+      });
+
+      // Configurar event listener para el select
+      document.getElementById('ordenar-por').addEventListener('change', function() {
+        const valor = this.value.split('-');
+        ordenarPor(valor[0], valor[1]);
+      });
+
+      // Función para ordenar al hacer clic en los encabezados
+      function ordenarPor(columna, dir = null) {
+        // Determinar dirección
+        if (dir) {
+          direccion = dir;
+        } else {
+          // Cambiar dirección si es la misma columna
+          if (ordenActual === columna) {
+            direccion = direccion === 'asc' ? 'desc' : 'asc';
+          } else {
+            direccion = 'asc';
+          }
+        }
+
+        ordenActual = columna;
+
+        // Quitar clases de ordenamiento de todos los encabezados
+        document.querySelectorAll('.sortable').forEach(th => {
+          th.classList.remove('asc', 'desc');
+        });
+
+        // Añadir clase al encabezado actual
+        const thActual = document.querySelector(`th[data-col="${columna}"]`);
+        thActual.classList.add(direccion);
+
+        // Ordenar los datos
+        ordenarDatos(columna, direccion);
+      }
+
+      // Función principal de ordenamiento
+      function ordenarDatos(columna, direccion) {
+        usuariosData.sort((a, b) => {
+          let valorA, valorB;
+
+          switch(columna) {
+            case 'nombre':
+              valorA = `${a.nombre} ${a.apellido}`.toLowerCase();
+              valorB = `${b.nombre} ${b.apellido}`.toLowerCase();
+              break;
+            case 'edad':
+              valorA = a.edad;
+              valorB = b.edad;
+              break;
+            case 'genero':
+              valorA = a.genero;
+              valorB = b.genero;
+              break;
+            case 'pais':
+              valorA = a.pais;
+              valorB = b.pais;
+              break;
+            case 'tiempo':
+              valorA = a.tiempoJugado;
+              valorB = b.tiempoJugado;
+              break;
+            case 'racha':
+              valorA = a.rachaDias;
+              valorB = b.rachaDias;
+              break;
+            case 'fecha':
+              valorA = new Date(a.ultimoInicioSesion.split('/').reverse().join('-')).getTime();
+              valorB = new Date(b.ultimoInicioSesion.split('/').reverse().join('-')).getTime();
+              break;
+            default:
+              return 0;
+          }
+
+          if (valorA < valorB) return direccion === 'asc' ? -1 : 1;
+          if (valorA > valorB) return direccion === 'asc' ? 1 : -1;
+          return 0;
+        });
+
+        // Actualizar la tabla
+        actualizarTabla();
+      }
+
+      // Función para actualizar la tabla con los datos ordenados
+      function actualizarTabla() {
+        tablaBody.innerHTML = '';
+
+        usuariosData.forEach(usuario => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${usuario.nombre} ${usuario.apellido}</td>
+            <td>${usuario.correo_jugador}</td>
+            <td>${usuario.edad}</td>
+            <td>${usuario.genero}</td>
+            <td>${usuario.pais}</td>
+            <td>${usuario.tiempoJugado}</td>
+            <td>${usuario.rachaDias}</td>
+            <td>${usuario.ultimoInicioSesion}</td>
+          `;
+          tablaBody.appendChild(row);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

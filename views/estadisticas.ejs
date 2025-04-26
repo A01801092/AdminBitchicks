@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Estadísticas - BitChicks Admin</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Itim&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <header class="header">
+    <h1>✨ Estadísticas ✨</h1>
+    <nav class="nav">
+      <a href="/">Inicio</a>
+      <a href="/lecciones">Lecciones</a>
+      <a href="/estadisticas">Estadísticas</a>
+      <a href="/usuarios">Usuarios</a>
+      <a href="/creditos">Créditos</a>
+      <a href="/juego">Juego</a>
+    </nav>
+  </header>
+
+  <div class="main">
+    <div class="estadisticas">
+
+      <div class="tarjetas-estadisticas">
+        <div class="tarjeta">
+          <h3>Total de Usuarios</h3>
+          <p><%= stats.total_usuarios %></p>
+        </div>
+        <div class="tarjeta">
+          <h3>Promedio de Racha de Días</h3>
+          <p><%= stats.promedio_racha.toFixed(2) %> días</p>
+        </div>
+        <div class="tarjeta">
+          <h3>Total de Tiempo Jugado</h3>
+          <p><%= stats.total_tiempo.toFixed(2) %> horas</p>
+        </div>
+        <div class="tarjeta">
+          <h3>Promedio de Tiempo Jugado</h3>
+          <p><%= stats.promedio_tiempo.toFixed(2) %> horas</p>
+        </div>
+      </div>
+      <div class="grafico-container">
+        <h3>¿Qué país juega más horas?</h3>
+        <canvas id="graficoPaises"></canvas>
+      </div>
+
+      <div class="grafico-seccion">
+        <div class="grafico-container">
+          <h3>¿De qué edad se registran más usuarios?</h3>
+          <canvas id="graficoEdades"></canvas>
+        </div>
+      </div>
+
+      <div class="grafico-seccion">
+        <div class="grafico-container">
+          <h3>¿En qué fecha se han jugado más horas?</h3>
+          <canvas id="graficoHorasPorDia"></canvas>
+        </div>
+      </div>
+
+      <div class="grafico-seccion">
+        <div class="grafico-container">
+          <h3>¿En qué horario juegan más usuarios?</h3>
+          <canvas id="graficoHorasConexion"></canvas>
+        </div>
+      </div>
+
+      <div class="grafico-seccion">
+        <div class="grafico-container">
+          <h3>¿Qué país tiene más usuarios registrados?</h3>
+          <canvas id="graficoUsuariosPais"></canvas>
+        </div>
+      </div>
+
+      <div class="grafico-seccion">
+        <div class="grafico-container">
+          <h3>¿Qué género tiene más usuarios registrados?</h3>
+          <canvas id="graficoGeneroUsuarios"></canvas>
+        </div>
+      </div>
+
+      <div class="grafico-seccion">
+        <div class="grafico-container">
+          <h3>¿Qué lección es más difícil?</h3>
+          <canvas id="graficoLeccionesDificiles"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 BitChicks - Todos los derechos reservados para CryptoChicks</p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Gráfico de barras (horas por país)
+      const ctxPaises = document.getElementById('graficoPaises').getContext('2d');
+      new Chart(ctxPaises, {
+        type: 'bar',
+        data: {
+          labels: <%- JSON.stringify(paises.map(p => p.pais)) %>,
+          datasets: [{
+            label: 'Horas jugadas',
+            data: <%- JSON.stringify(paises.map(p => parseFloat(p.total_tiempo))) %>,
+            backgroundColor: '#F50087',
+            borderColor: '#F50087',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.raw} horas jugadas`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Horas jugadas'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Países'
+              }
+            }
+          }
+        }
+      });
+
+      // Gráfico de barras (usuarios por edad) - MEJORADO
+      const ctxEdades = document.getElementById('graficoEdades').getContext('2d');
+      new Chart(ctxEdades, {
+        type: 'bar',
+        data: {
+          labels: <%- JSON.stringify(usuariosPorEdad.map(e => e.edad)) %>,
+          datasets: [{
+            label: 'Usuarios registrados',
+            data: <%- JSON.stringify(usuariosPorEdad.map(e => e.total_usuarios)) %>,
+            backgroundColor: '#F50087',
+            borderColor: '#F50087',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.raw} usuario${ctx.raw !== 1 ? 's' : ''} de ${ctx.label} años`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+              },
+              title: {
+                display: true,
+                text: 'Número de usuarios'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Edad'
+              }
+            }
+          }
+        }
+      });
+
+      // Gráfico de pastel (usuarios por país)
+      const ctxPastel = document.getElementById('graficoUsuariosPais').getContext('2d');
+      new Chart(ctxPastel, {
+        type: 'pie',
+        data: {
+          labels: <%- JSON.stringify(usuariosPorPais.map(p => p.pais)) %>,
+          datasets: [{
+            data: <%- JSON.stringify(usuariosPorPais.map(p => p.total_usuarios)) %>,
+            backgroundColor: [
+              '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+              '#FF9F40', '#8AC24A', '#FF6B6B', '#47B8E0', '#7B68EE'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = Math.round((ctx.raw / total) * 100);
+                  return `${ctx.label}: ${ctx.raw} (${percentage}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+    const ctxLineas = document.getElementById('graficoHorasPorDia').getContext('2d');
+    new Chart(ctxLineas, {
+      type: 'line',
+      data: {
+        labels: <%- JSON.stringify(horasPorDia.map(d => new Date(d.fecha).toLocaleDateString('es-MX'))) %>,
+        datasets: [{
+          label: 'Horas jugadas',
+          data: <%- JSON.stringify(horasPorDia.map(d => d.horas_totales)) %>,
+          borderColor: '#F50087',
+          backgroundColor: 'rgba(255, 99, 132, 0.1)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: (ctx) => ctx[0].label,
+              label: (ctx) => `${ctx.raw.toFixed(2)} horas jugadas`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Horas totales' }
+          },
+          x: {
+            title: { display: true, text: 'Fecha' },
+            ticks: {
+              maxRotation: 45,
+              minRotation: 45
+            }
+          }
+        }
+      }
+    }); // <-- Este punto y coma cierra correctamente la instancia del gráfico
+
+    // Gráfico de horas de conexión (similar al de fechas)
+      const ctxHorasConexion = document.getElementById('graficoHorasConexion').getContext('2d');
+      new Chart(ctxHorasConexion, {
+        type: 'line',  // Puedes cambiar a 'bar' si prefieres
+        data: {
+          labels: <%- JSON.stringify(conexionesPorHora.map(c => c.hora + ':00')) %>,
+          datasets: [{
+            label: 'Conexiones',
+            data: <%- JSON.stringify(conexionesPorHora.map(c => c.total_conexiones)) %>,
+            borderColor: '#F50087',
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.raw} conexiones a las ${ctx.label}`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Número de conexiones'
+              },
+              ticks: {
+                precision: 0
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Hora del día'
+              }
+            }
+          }
+        }
+      });
+
+      // Gráfico de pastel para distribución por género
+      const ctxGenero = document.getElementById('graficoGeneroUsuarios').getContext('2d');
+      new Chart(ctxGenero, {
+        type: 'pie',
+        data: {
+          labels: <%- JSON.stringify(usuariosPorGenero.map(g => g.genero)) %>,
+          datasets: [{
+            data: <%- JSON.stringify(usuariosPorGenero.map(g => g.total_usuarios)) %>,
+            backgroundColor: [
+              '#FF6384', // Femenino (rosa)
+              '#FFCE56', // Masculino (azul)
+              '#36A2EB'  // Otro (amarillo)
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = Math.round((ctx.raw / total) * 100);
+                  return `${ctx.label}: ${ctx.raw} (${percentage}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Gráfico de barras horizontales para lecciones difíciles
+      const ctxLeccionesDificiles = document.getElementById('graficoLeccionesDificiles').getContext('2d');
+      new Chart(ctxLeccionesDificiles, {
+        type: 'bar',
+        data: {
+          labels: <%- JSON.stringify(leccionesDificiles.map(l => l.nombre_leccion)) %>,
+          datasets: [{
+            label: 'Intentos promedio',
+            data: <%- JSON.stringify(leccionesDificiles.map(l => parseFloat(l.intentos_promedio))) %>,
+            backgroundColor: '#F50087',
+            borderColor: '#F50087',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.raw.toFixed(2)} intentos promedio`
+              }
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Intentos promedio para completar'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Lección'
+              }
+            }
+          }
+        }
+      });
+  });
+  </script>
+</body>
+</html>
