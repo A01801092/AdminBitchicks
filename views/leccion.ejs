@@ -2,14 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Usuarios - BitChicks Admin</title>
+  <title>Lecciones - BitChicks Admin</title>
   <link rel="stylesheet" href="estilos.css">
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Itim&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <header class="header">
-    <h1>✨ Usuarios ✨</h1>
+    <h1>✨ Lecciones ✨</h1>
     <nav class="nav">
       <a href="/index">Inicio</a>
       <a href="/estadisticas">Estadísticas</a>
@@ -34,47 +34,29 @@
       <div class="filtros">
         <label for="ordenar-por">Ordenar por:</label>
         <select id="ordenar-por">
-          <option value="nombre-asc">Nombre (A-Z)</option>
-          <option value="nombre-desc">Nombre (Z-A)</option>
-          <option value="edad-asc">Edad (Menor a Mayor)</option>
-          <option value="edad-desc">Edad (Mayor a Menor)</option>
-          <option value="genero-asc">Género (F-M-O)</option>
-          <option value="genero-desc">Género (O-M-F)</option>
-          <option value="pais-asc">País (A-Z)</option>
-          <option value="pais-desc">País (Z-A)</option>
-          <option value="tiempo-asc">Tiempo Jugado (Menor a Mayor)</option>
-          <option value="tiempo-desc">Tiempo Jugado (Mayor a Menor)</option>
-          <option value="racha-asc">Racha (Menor a Mayor)</option>
-          <option value="racha-desc">Racha (Mayor a Menor)</option>
-          <option value="fecha-asc">Última Sesión (Antiguas primero)</option>
-          <option value="fecha-desc">Última Sesión (Recientes primero)</option>
+          <option value="id_leccion-asc">ID (Menor a Mayor)</option>
+          <option value="id_leccion-desc">ID (Mayor a Menor)</option>
+          <option value="nombre_leccion-asc">Nombre (A-Z)</option>
+          <option value="nombre_leccion-desc">Nombre (Z-A)</option>
+          <option value="dificultad-asc">Dificultad (Básica-Intermedia-Avanzada)</option>
+          <option value="dificultad-desc">Dificultad (Avanzada-Intermedia-Básica)</option>
         </select>
       </div>
 
       <table class="tabla-usuarios">
         <thead>
           <tr>
-            <th class="sortable" data-col="nombre">Nombre</th>
-            <th>Correo</th>
-            <th class="sortable" data-col="edad">Edad</th>
-            <th class="sortable" data-col="genero">Género</th>
-            <th class="sortable" data-col="pais">Pais</th>
-            <th class="sortable" data-col="tiempo">Tiempo Jugado</th>
-            <th class="sortable" data-col="racha">Racha de Días</th>
-            <th class="sortable" data-col="fecha">Última Sesión</th>
+            <th class="sortable" data-col="id_leccion">ID</th>
+            <th class="sortable" data-col="nombre_leccion">Nombre</th>
+            <th class="sortable" data-col="dificultad">Dificultad</th>
           </tr>
         </thead>
         <tbody id="tabla-body">
-          <% usuarios.forEach(usuario => { %>
+          <% leccion.forEach(leccion => { %>
             <tr>
-              <td><%= usuario.nombre %> <%= usuario.apellido %></td>
-              <td><%= usuario.correo_jugador %></td>
-              <td><%= usuario.edad %></td>
-              <td><%= usuario.genero %></td>
-              <td><%= usuario.pais %></td>
-              <td><%= usuario.tiempoJugado %></td>
-              <td><%= usuario.rachaDias %></td>
-              <td><%= new Date(usuario.ultimoInicioSesion).toLocaleDateString('es-MX') %></td>
+              <td><%= leccion.id_leccion %></td>
+              <td><%= leccion.nombre_leccion %></td>
+              <td><%= leccion.dificultad %></td>
             </tr>
           <% }) %>
         </tbody>
@@ -92,19 +74,13 @@
       const tablaBody = document.getElementById('tabla-body');
       const filas = Array.from(tablaBody.querySelectorAll('tr'));
 
-      // Crear array de usuarios desde las filas de la tabla
-      const usuariosData = filas.map(fila => {
+      // Crear array de lecciones desde las filas de la tabla
+      const leccionesData = filas.map(fila => {
         const celdas = fila.querySelectorAll('td');
         return {
-          nombre: celdas[0].textContent.split(' ')[0],
-          apellido: celdas[0].textContent.split(' ')[1],
-          correo_jugador: celdas[1].textContent,
-          edad: parseInt(celdas[2].textContent),
-          genero: celdas[3].textContent,
-          pais: celdas[4].textContent,
-          tiempoJugado: parseFloat(celdas[5].textContent),
-          rachaDias: parseInt(celdas[6].textContent),
-          ultimoInicioSesion: celdas[7].textContent
+          id_leccion: parseInt(celdas[0].textContent),
+          nombre_leccion: celdas[1].textContent,
+          dificultad: celdas[2].textContent
         };
       });
 
@@ -157,37 +133,23 @@
 
       // Función principal de ordenamiento
       function ordenarDatos(columna, direccion) {
-        usuariosData.sort((a, b) => {
+        leccionesData.sort((a, b) => {
           let valorA, valorB;
 
           switch(columna) {
-            case 'nombre':
-              valorA = `${a.nombre} ${a.apellido}`.toLowerCase();
-              valorB = `${b.nombre} ${b.apellido}`.toLowerCase();
+            case 'id_leccion':
+              valorA = a.id_leccion;
+              valorB = b.id_leccion;
               break;
-            case 'edad':
-              valorA = a.edad;
-              valorB = b.edad;
+            case 'nombre_leccion':
+              valorA = a.nombre_leccion.toLowerCase();
+              valorB = b.nombre_leccion.toLowerCase();
               break;
-            case 'genero':
-              valorA = a.genero;
-              valorB = b.genero;
-              break;
-            case 'pais':
-              valorA = a.pais;
-              valorB = b.pais;
-              break;
-            case 'tiempo':
-              valorA = a.tiempoJugado;
-              valorB = b.tiempoJugado;
-              break;
-            case 'racha':
-              valorA = a.rachaDias;
-              valorB = b.rachaDias;
-              break;
-            case 'fecha':
-              valorA = new Date(a.ultimoInicioSesion.split('/').reverse().join('-')).getTime();
-              valorB = new Date(b.ultimoInicioSesion.split('/').reverse().join('-')).getTime();
+            case 'dificultad':
+              // Ordenamos por nivel de dificultad
+              const niveles = { 'Básica': 1, 'Intermedia': 2, 'Avanzada': 3 };
+              valorA = niveles[a.dificultad] || 0;
+              valorB = niveles[b.dificultad] || 0;
               break;
             default:
               return 0;
@@ -206,17 +168,12 @@
       function actualizarTabla() {
         tablaBody.innerHTML = '';
 
-        usuariosData.forEach(usuario => {
+        leccionesData.forEach(leccion => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${usuario.nombre} ${usuario.apellido}</td>
-            <td>${usuario.correo_jugador}</td>
-            <td>${usuario.edad}</td>
-            <td>${usuario.genero}</td>
-            <td>${usuario.pais}</td>
-            <td>${usuario.tiempoJugado}</td>
-            <td>${usuario.rachaDias}</td>
-            <td>${usuario.ultimoInicioSesion}</td>
+            <td>${leccion.id_leccion}</td>
+            <td>${leccion.nombre_leccion}</td>
+            <td>${leccion.dificultad}</td>
           `;
           tablaBody.appendChild(row);
         });

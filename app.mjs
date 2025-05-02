@@ -16,7 +16,7 @@ app.set('views', path.join(process.cwd(), 'views'));
 app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-  secret: 'tu_clave_secreta_aleatoria',
+  secret: 'E679F2B24B86D6A74317265AD7E5D',
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -305,6 +305,28 @@ app.get('/usuarios', requireAuth, (req, res) => {
       return res.status(500).render('error', { error: 'Error al cargar usuarios' });
     }
     res.render('usuarios', { usuarios: resultados, admin: req.session.admin });
+  });
+});
+
+app.get('/leccion', requireAuth, (req, res) => {
+  const orden = req.query.orden || 'nombre';
+  const direccion = req.query.dir || 'asc';
+
+  const ordenamientosValidos = {
+    'id_leccion': 'id_leccion', 'nombre_leccion': 'nombre_leccion', 'dificultad': 'dificultad'
+  };
+
+  let query = 'SELECT * FROM leccion';
+  if (ordenamientosValidos[orden]) {
+    query += ` ORDER BY ${ordenamientosValidos[orden]} ${direccion === 'desc' ? 'DESC' : 'ASC'}`;
+  }
+
+  db.query(query, (err, resultados) => {
+    if (err) {
+      console.error('Error en lecciones:', err);
+      return res.status(500).render('error', { error: 'Error al cargar lecciones' });
+    }
+    res.render('leccion', { leccion: resultados, admin: req.session.admin });
   });
 });
 
