@@ -330,6 +330,28 @@ app.get('/leccion', requireAuth, (req, res) => {
   });
 });
 
+app.get('/pregunta', requireAuth, (req, res) => {
+  const orden = req.query.orden || 'nombre';
+  const direccion = req.query.dir || 'asc';
+
+  const ordenamientosValidos = {
+    'id_pregunta': 'id_pregunta', 'id_leccion': 'id_leccion', 'texto_pregunta': 'texto_pregunta'
+  };
+
+  let query = 'SELECT * FROM pregunta';
+  if (ordenamientosValidos[orden]) {
+    query += ` ORDER BY ${ordenamientosValidos[orden]} ${direccion === 'desc' ? 'DESC' : 'ASC'}`;
+  }
+
+  db.query(query, (err, resultados) => {
+    if (err) {
+      console.error('Error en preguntas:', err);
+      return res.status(500).render('error', { error: 'Error al cargar preguntas' });
+    }
+    res.render('pregunta', { pregunta: resultados, admin: req.session.admin });
+  });
+});
+
 // Ruta de créditos (pública)
 app.get('/creditos', (req, res) => {
   res.render('creditos', { admin: req.session.admin });
