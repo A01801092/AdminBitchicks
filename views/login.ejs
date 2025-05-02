@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - BitChicks Admin</title>
+  <link rel="stylesheet" href="/estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Itim&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+  <header class="header">
+    <h1>BitChicks 🐤</h1>
+  </header>
+
+  <main class="main login-main">
+    <div class="login-container">
+      <h2 style="text-align: center; color: #F50087;">Iniciar Sesión</h2>
+
+      <% if (error) { %>
+        <div class="error-message">
+        ️ <%= error %>
+        </div>
+      <% } %>
+
+      <% if (success) { %>
+        <div class="success-message">
+         <%= success %>
+        </div>
+      <% } %>
+
+      <form class="login-form" action="/login" method="POST">
+        <div class="form-group">
+          <label for="correo_admin">Correo Electrónico</label>
+          <input type="email" id="correo_admin" name="correo_admin" required
+                 class="form-control" placeholder="admin@bitchicks.com">
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" required
+                 class="form-control" placeholder="BitChicks123">
+        </div>
+        <button type="submit" class="login-button">Ingresar</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 BitChicks - Todos los derechos reservados para CryptoChicks</p>
+  </footer>
+</body>
+</html>

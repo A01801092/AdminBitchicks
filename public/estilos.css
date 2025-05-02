@@ -1,3 +1,38 @@
+/* Agrega esto al final de tu CSS existente */
+
+/* Contenedor del botón de logout */
+.logout-container {
+  position: absolute;
+  top: 45px;
+  right: 20px;
+}
+
+/* Botón de logout */
+.logout-button {
+  background-color: white;
+  color: #F50087;
+  padding: 8px 15px;
+  border-radius: 18px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logout-button:hover {
+  background-color: #ffcbcb;
+  transform: translateY(-2px);
+}
+
+.logout-icon:hover {
+  background-color: #ffcbcb;
+  transform: scale(1.1);
+}
+
 /*Estilos para el cuerpo de las páginas*/
 html, body {
   height: 100%;
@@ -59,7 +94,6 @@ body {
   background-color: #ffcbcb;
   text-align: center;
   padding: 20px;
-  margin-top: 40px;
   border-top: 2px solid #ffcbd;
 }
 
@@ -68,6 +102,107 @@ body {
   font-size: 1.1rem;
   color: #F50087;
   margin: 0;
+}
+
+/* Estilos específicos para el login */
+.login-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #fff9fb;
+}
+
+.login-container {
+  background-color: white;
+  border: 5px solid #ffe066;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px #fff3b0;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-container h2 {
+  font-family: 'Itim', cursive;
+  color: #F50087;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #3a2c36;
+}
+
+.form-group input {
+  padding: 12px 15px;
+  border: 2px solid #ffcbcb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #F50087;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 0, 135, 0.1);
+}
+
+.login-button {
+  background-color: #F50087;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.login-button:hover {
+  background-color: #d40073;
+  transform: translateY(-2px);
+}
+
+.login-container {
+  max-width: 400px;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(245, 0, 135, 0.1);
+}
+.error-message {
+  background: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border-left: 4px solid #f44336;
+}
+.success-message {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border-left: 4px solid #4caf50;
 }
 
 /* Estilos para el contenedor de bienvenida en index*/
@@ -324,4 +459,214 @@ body {
   font-size: 1.8rem;
   margin-top: 2rem;
   color: #F50087;
+}
+
+.editor-leccion {
+  width: 60%;
+  border: 5px solid #ffe066;
+  padding: 2rem;
+  text-align: left;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.editor-header {
+  padding: 20px;
+  color: #F50087;
+}
+
+.editor-header h2 {
+  font-family: 'Itim', cursive;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.editor-body {
+  padding: 30px;
+}
+
+.form-row {
+  margin-bottom: 25px;
+}
+
+.form-row label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #3a2c36;
+  font-size: 0.95rem;
+}
+
+.form-row input[type="text"],
+.form-row select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #ffcbcb;
+  border-radius: 8px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-row input[type="text"]:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  border-color: #F50087;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 0, 135, 0.1);
+}
+
+.form-row textarea {
+  width: 100%;
+  min-height: 300px;
+  padding: 15px;
+  border: 2px solid #ffcbcb;
+  border-radius: 8px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ffcbcb;
+}
+
+.btn-save {
+  background-color: #F50087;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-save:hover {
+  background-color: #d40073;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(245, 0, 135, 0.2);
+}
+
+.btn-cancel {
+  background-color: white;
+  color: #F50087;
+  border: 2px solid #F50087;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-cancel:hover {
+  background-color: #fff0f5;
+}
+
+/* Estilos para los mensajes */
+.message-container {
+  margin-bottom: 25px;
+}
+
+/* Estilos específicos para el formulario de agregar admin */
+.admin-form-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.admin-form {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  border: 5px solid #ffe066;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.admin-form h2 {
+  font-family: 'Itim', cursive;
+  color: #F50087;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 25px;
+}
+
+.admin-form .form-row {
+  margin-bottom: 20px;
+}
+
+.admin-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #5a287d;
+  font-size: 0.95rem;
+}
+
+.admin-form input {
+  width: 90%;
+  padding: 12px 15px;
+  border: 2px solid #ffcbcb;
+  border-radius: 8px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.admin-form input:focus {
+  border-color: #F50087;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 0, 135, 0.1);
+}
+
+.admin-form .form-actions {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.btn-submit {
+  background-color: #F50087;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Quicksand', sans-serif;
+  box-shadow: 0 2px 5px rgba(245, 0, 135, 0.2);
+}
+
+.btn-submit:hover {
+  background-color: #d40073;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(245, 0, 135, 0.3);
+}
+
+/* Ajustes para mensajes en este formulario */
+.admin-form .message-container {
+  margin: -10px 0 20px 0;
+}
+
+.admin-form .error-message,
+.admin-form .success-message {
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  animation: fadeIn 0.3s ease-out;
 }

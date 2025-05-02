@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lección - BitChicks Admin</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Itim&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="header">
+    <div>
+      <h1>✨ Lección ✨</h1>
+      <nav class="nav">
+        <a href="/index">Inicio</a>
+        <a href="/estadisticas">Estadísticas</a>
+        <a href="/usuarios">Usuarios</a>
+        <a href="/lecciones">Lección</a>
+        <a href="/agregar">Administradoras</a>
+        <a href="/creditos">Créditos</a>
+      </nav>
+    </div>
+
+    <% if (admin) { %>
+      <div class="logout-container">
+        <form action="/logout" method="POST" style="margin: 0;">
+          <button type="submit" class="logout-button">Cerrar Sesión</button>
+        </form>
+      </div>
+    <% } %>
+  </header>
+
+  <main class="main">
+    <div class="editor-leccion">
+      <div class="editor-header">
+        <h2>Edita la Lección Especial</h2>
+      </div>
+
+      <div class="editor-body">
+        <% if (success) { %>
+          <div class="message-container">
+            <div class="success-message"><%= success %></div>
+          </div>
+        <% } %>
+
+        <% if (error) { %>
+          <div class="message-container">
+            <div class="error-message"><%= error %></div>
+          </div>
+        <% } %>
+
+        <form action="/lecciones" method="POST">
+          <div class="form-row">
+            <label for="nombre_leccion">Nombre de la Lección</label>
+            <input type="text" id="nombre_leccion" name="nombre_leccion" value="<%= leccion.nombre_leccion %>" required>
+          </div>
+
+          <div class="form-row">
+            <label for="dificultad">Dificultad</label>
+            <select id="dificultad" name="dificultad" required>
+              <option value="Básica" <%= leccion.dificultad === 'Básica' ? 'selected' : '' %>>Básica</option>
+              <option value="Intermedia" <%= leccion.dificultad === 'Intermedia' ? 'selected' : '' %>>Intermedia</option>
+              <option value="Avanzada" <%= leccion.dificultad === 'Avanzada' ? 'selected' : '' %>>Avanzada</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="contenido">Contenido</label>
+            <textarea id="contenido" name="contenido" required><%= leccion.contenido %></textarea>
+          </div>
+
+          <div class="editor-actions">
+            <a href="/index" class="btn-cancel">Cancelar</a>
+            <button type="submit" class="btn-save">Guardar Cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 BitChicks - Todos los derechos reservados para CryptoChicks</p>
+  </footer>
+
+</body>
+</html>

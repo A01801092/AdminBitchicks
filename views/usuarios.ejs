@@ -11,13 +11,20 @@
   <header class="header">
     <h1>✨ Usuarios ✨</h1>
     <nav class="nav">
-      <a href="/">Inicio</a>
-      <a href="/lecciones">Lecciones</a>
+      <a href="/index">Inicio</a>
       <a href="/estadisticas">Estadísticas</a>
       <a href="/usuarios">Usuarios</a>
+      <a href="/lecciones">Lección</a>
+      <a href="/agregar">Administradoras</a>
       <a href="/creditos">Créditos</a>
-      <a href="/juego">Juego</a>
     </nav>
+
+    <% if (admin) { %>
+      <div class="logout-container">
+        <form action="/logout" method="POST" style="margin: 0;">
+          <button type="submit" class="logout-button">Cerrar Sesión</button>
+      </div>
+    <% } %>
   </header>
 
   <main class="main">
