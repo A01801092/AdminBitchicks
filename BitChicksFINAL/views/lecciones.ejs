@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Lección - BitChicks Admin</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Itim&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Quicksand', sans-serif; margin: 0; }
+    .editor-leccion { max-width: 800px; margin: 0 auto; padding: 20px; background: white; border-radius: 10px; }
+    .editor-header { text-align: center; margin-bottom: 20px; }
+    .form-row { margin-bottom: 15px; }
+    label { font-weight: 600; display: block; margin-bottom: 5px; }
+    input[type="text"], select, textarea {
+      width: 95%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;
+    }
+    textarea { height: 150px; }
+    .editor-actions { text-align: right; margin-top: 20px; }
+    .btn-save, .btn-cancel { padding: 10px 20px; background-color: #F50087; color: white; border: none; border-radius: 5px; text-decoration: none; }
+    .btn-cancel { background-color: white; color: #F50087; border: 2px solid #F50087; }
+    .btn-save:hover, .btn-cancel:hover { opacity: 1; }
+    fieldset {
+      margin-bottom: 10px;
+      padding: 20px;
+      background: white;
+      border: 2px solid #ffcbcb;
+      border-radius: 5px;
+      position: relative;       /* Nuevo */
+      margin-top: 35px;         /* Nuevo */
+      padding-top: 15px;       /* Nuevo */
+    }
+    legend {
+      position: absolute;      /* Nuevo */
+      top: -25px;              /* Nuevo */
+      left: 10px;              /* Nuevo */
+      background: white;       /* Nuevo */
+      padding: 0 10px;         /* Nuevo */
+      font-weight: 600;        /* Nuevo */
+    }
+    .success { color: green; text-align: center; font-size: 1.2em; }
+    .error { color: red; text-align: center; font-size: 1.2em; }
+    .header { background-color: #F50087; padding: 20px; }
+  </style>
+</head>
+<body>
+
+  <!-- Header (sin cambios) -->
+  <header class="header">
+    <div>
+      <h1>✨ Lección ✨</h1>
+      <nav class="nav">
+        <a href="/index">Inicio</a>
+        <a href="/estadisticas">Estadísticas</a>
+        <a href="/usuarios">Usuarios</a>
+        <a href="/leccion">Lecciones</a>
+        <a href="/pregunta">Preguntas</a>
+        <a href="/lecciones">Lección</a>
+        <a href="/agregar">Administradoras</a>
+        <a href="/creditos">Créditos</a>
+      </nav>
+    </div>
+
+    <% if (admin) { %>
+      <div class="logout-container">
+        <form action="/logout" method="POST" style="margin: 0;">
+          <button type="submit" class="logout-button">Cerrar Sesión</button>
+        </form>
+      </div>
+    <% } %>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main">
+    <div class="editor-leccion">
+      <div class="editor-header">
+        <h2>Edita la Lección Especial</h2>
+      </div>
+
+      <div class="editor-body">
+        <% if (success) { %>
+          <div class="message-container">
+            <div class="success-message"><%= success %></div>
+          </div>
+        <% } %>
+
+        <% if (error) { %>
+          <div class="message-container">
+            <div class="error-message"><%= error %></div>
+          </div>
+        <% } %>
+
+        <form method="POST" action="/lecciones">
+          <!-- Campos del formulario (sin cambios) -->
+          <div class="form-row">
+            <label for="nombre_leccion">Nombre del Tema:</label>
+            <input type="text" name="nombre_leccion" id="nombre_leccion" value="<%= leccion.nombre_leccion %>" required>
+          </div>
+
+          <div class="form-row">
+            <label for="dificultad">Dificultad:</label>
+            <select name="dificultad" id="dificultad" required>
+              <option value="Básica" <%= leccion.dificultad === 'Básica' ? 'selected' : '' %>>Básica</option>
+              <option value="Media" <%= leccion.dificultad === 'Media' ? 'selected' : '' %>>Media</option>
+              <option value="Avanzada" <%= leccion.dificultad === 'Avanzada' ? 'selected' : '' %>>Avanzada</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="contenido">Contenido:</label>
+            <textarea name="contenido" id="contenido" required><%= leccion.contenido %></textarea>
+          </div>
+
+          <!-- Sección de preguntas (con campos ajustados) -->
+          <h3>Preguntas</h3>
+          <% preguntas.forEach((p, index) => { %>
+            <fieldset>
+              <legend>Pregunta <%= index + 1 %></legend> <!-- Ahora aparece fuera -->
+              <label>Texto de la pregunta:</label>
+              <input type="text" name="preguntas[<%= index %>][texto]" value="<%= p.texto_pregunta %>" required>
+
+              <% for (let i = 0; i < 3; i++) { %>
+                <div>
+                  <label>Opción <%= i + 1 %>:</label>
+                  <input type="text" name="preguntas[<%= index %>][opciones][<%= i %>][texto]"
+                         value="<%= p.opciones[i]?.texto || '' %>" required>
+                  <label>
+                    <input type="radio" name="preguntas[<%= index %>][correcta]"
+                           value="<%= i %>" <%= p.opciones[i]?.es_correcta ? 'checked' : '' %>> Correcta
+                  </label>
+                </div>
+              <% } %>
+            </fieldset>
+          <% }); %>
+
+          <div class="editor-actions">
+            <a href="/index" class="btn-cancel">Cancelar</a>
+            <button type="submit" class="btn-save">Guardar Cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 BitChicks - Todos los derechos reservados para CryptoChicks</p>
+  </footer>
+</body>
+</html>

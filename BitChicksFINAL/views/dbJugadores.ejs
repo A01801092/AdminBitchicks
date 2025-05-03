@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Conexiones de los jugadores</title>
+    <style>
+      /* Estilo general para el cuerpo */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+
+      /* Estilo para el título */
+      h1 {
+        text-align: center;
+        color: #4CAF50;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      /* Estilo para la tabla */
+      table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Estilo para las celdas de la tabla */
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      /* Estilo para los encabezados */
+      th {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 1.2rem;
+      }
+
+      /* Estilo para las filas alternas */
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Conexiones de los jugadores</h1>
+    <table>
+      <tr>
+        <th>nombre</th>
+        <th>apellido</th>
+        <th>fecha de nacimiento</th>
+        <th>pais</th>
+        <th>correo</th></th>
+        <th>contraseña</th>
+        <th>monedas</th>
+        <th>cantidadComida</th>
+        <th>cantidadJuguete</th>
+        <th>rachaDias</th>
+        <th>UltimoInicioSesion</th>
+        <th>UltimoCierreSesion</th>
+        <th>nuevoUsuario</th>
+        <th>horasJugadas</th>
+      </tr>
+      <% for (const row of rows) { %>
+        <tr>
+          <td><%= row.nombre %></td>
+          <td><%= row.apellido %></td>
+          <td><%= row.fecha_de_nacimiento %></td>
+          <td><%= row.pais %></td>
+          <td><%= row.correo_jugador %></td>
+          <td><%= row.password %></td>
+          <td><%= row.monedas %></td>
+          <td><%= row.cantidadComida %></td>
+          <td><%= row.cantidadJuguete %></td>
+          <td><%= row.rachaDias %></td>
+          <td><%= row.ultimoInicioSesion %></td>
+          <td><%= row.ultimoCierreSesion %></td>
+          <td><%= row.nuevoUsuario %></td>
+          <td><%= row.tiempoJugado %></td>
+        </tr>
+      <% } %>
+    </table>
+  </body>
+</html>

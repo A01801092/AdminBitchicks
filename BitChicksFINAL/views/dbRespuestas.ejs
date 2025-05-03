@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Respuestas base datos</title>
+    <style>
+      /* Estilo general para el cuerpo */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+
+      /* Estilo para el título */
+      h1 {
+        text-align: center;
+        color: #4CAF50;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      /* Estilo para la tabla */
+      table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Estilo para las celdas de la tabla */
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      /* Estilo para los encabezados */
+      th {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 1.2rem;
+      }
+
+      /* Estilo para las filas alternas */
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Respuestas base datos</h1>
+    <table>
+      <tr>
+        <th>id pregunta</th>
+        <th>Texto</th>
+        <th>es correcta</th>
+      </tr>
+      <% for (const row of rows) { %>
+        <tr>
+          <td><%= row.id_pregunta %></td>
+          <td><%= row.texto_opcion %></td>
+          <td><%= row.es_correcta %></td>
+        </tr>
+      <% } %>
+    </table>
+  </body>
+</html>

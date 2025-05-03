@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Lecciones base datos</title>
+    <style>
+      /* Estilo general para el cuerpo */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+
+      /* Estilo para el título */
+      h1 {
+        text-align: center;
+        color: #4CAF50;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      /* Estilo para la tabla */
+      table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Estilo para las celdas de la tabla */
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      /* Estilo para los encabezados */
+      th {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 1.2rem;
+      }
+
+      /* Estilo para las filas alternas */
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Lecciones base de datos</h1>
+    <table>
+      <tr>
+        <th>id leccion</th>
+        <th>nombre leccion</th>
+        <th>dificultad</th>
+        <th>contenido</th>
+      </tr>
+      <% for (const row of rows) { %>
+        <tr>
+          <td><%= row.id_leccion %></td>
+          <td><%= row.nombre_leccion %></td>
+          <td><%= row.dificultad %></td>
+          <td><%= row.contenido %></td>
+        </tr>
+      <% } %>
+    </table>
+  </body>
+</html>

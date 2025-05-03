@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Mascotas de los Jugadores</title>
+    <style>
+      /* Estilo general para el cuerpo */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+
+      /* Estilo para el título */
+      h1 {
+        text-align: center;
+        color: #4CAF50;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      /* Estilo para la tabla */
+      table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Estilo para las celdas de la tabla */
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      /* Estilo para los encabezados */
+      th {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 1.2rem;
+      }
+
+      /* Estilo para las filas alternas */
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Mascotas de los Jugadores</h1>
+    <table>
+      <tr>
+        <th>nombre</th>
+        <th>hambre</th>
+        <th>felicidad</th>
+        <th>energia</th>
+        <th>nivel</th></th>
+        <th>correo_jugador</th>
+        <th>fechaUltimaAlimentacion</th>
+        <th>fechaUltimoJuego</th>
+      </tr>
+      <% for (const row of rows) { %>
+        <tr>
+          <td><%= row.nombre %></td>
+          <td><%= row.hambre %></td>
+          <td><%= row.felicidad %></td>
+          <td><%= row.energia %></td>
+          <td><%= row.nivel %></td>
+          <td><%= row.correo_jugador %></td>
+          <td><%= row.fechaUltimaAlimentacion %></td>
+          <td><%= row.fechaUltimoJuego %></td>
+        </tr>
+      <% } %>
+    </table>
+  </body>
+</html>
